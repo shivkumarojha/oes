@@ -3,9 +3,16 @@
   "version": "1.0.0",
   "description": "Backend for online mock examination system",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Shiv kumar ojha",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "prisma": "^5.14.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }
