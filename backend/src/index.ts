@@ -4,12 +4,12 @@ import 'dotenv/config'
 const app = express()
 
 // admin router
-import adminRouter from "./routes/adminRoute"
+import adminRouter from "./routes/adminRoute.js"
 app.use('/api/v1/admin', adminRouter)
 
 
 // Student Router
-import studentRouter from "./routes/studentRoute"
+import studentRouter from "./routes/studentRoute.js"
 app.use("/api/v1/student", studentRouter)
 
 app.listen(process.env.PORT, () => {
