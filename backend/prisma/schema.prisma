@@ -12,3 +12,140 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// Models
+
+// Admin Models
+model Admin {
+  id         Int        @id @default(autoincrement())
+  email      String     @unique @db.VarChar(50)
+  password   String     @db.VarChar(200)
+  name       String     @db.VarChar(50)
+  userName   String     @unique @db.VarChar(50)
+  role       Role       @default(ADMIN)
+  profilePic String?
+  TestName   TestName[]
+}
+
+// Role for admin and super admin
+enum Role {
+  ADMIN
+  SUPER
+}
+
+// Test Category
+// Like JEE, NEET, All Gov exams(UPSC, SSC)
+model TestCategory {
+  id            Int             @id @default(autoincrement())
+  categoryName  String
+  TestName      TestName[]
+  EnrollForTest EnrollForTest[]
+}
+
+// Test name like JEE exam 2019 and many more
+model TestName {
+  id            Int             @id @default(autoincrement())
+  testName      String
+  testPrice     Int
+  testTime      Int
+  visibility    Boolean
+  createdBy     Int
+  admin         Admin           @relation(fields: [createdBy], references: [id])
+  categoryId    Int
+  category      TestCategory    @relation(fields: [categoryId], references: [id])
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @updatedAt
+  TestQuestion  TestQuestion[]
+  testType      TestType
+  EnrollForTest EnrollForTest[]
+}
+
+// Type of test - Free Paid ONE
+enum TestType {
+  FREE
+  PAID
+  ONE_TIME_ONLY
+}
+
+// Test Questions
+model TestQuestion {
+  id       Int      @id @default(autoincrement())
+  testName Int
+  test     TestName @relation(fields: [testName], references: [id])
+  question String
+  answer   Answer
+  Options  Options?
+}
+
+model Options {
+  id             Int          @id @default(autoincrement())
+  testQuestionId Int          @unique
+  testQuestion   TestQuestion @relation(fields: [testQuestionId], references: [id])
+  option1        String
+  option2        String
+  option3        String
+  option4        String
+}
+
+// answer Enum
+enum Answer {
+  A
+  B
+  C
+  D
+}
+
+// Student Models
+model Student {
+  id                 Int                  @id @default(autoincrement())
+  email              String               @unique @db.VarChar(50)
+  password           String               @db.VarChar(200)
+  name               String               @db.VarChar(50)
+  userName           String               @unique @db.VarChar(50)
+  profilePic         String?
+  joinedAt           DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  SelectTestCategory SelectTestCategory[]
+  EnrollForTest      EnrollForTest[]
+}
+
+// Select categories for students so that they can select desired category of exams
+
+model SelectTestCategory {
+  id        Int     @id @default(autoincrement())
+  studentId Int
+  student   Student @relation(fields: [studentId], references: [id])
+  category  Int
+}
+
+// Enroll for Test
+model EnrollForTest {
+  id            Int           @id @default(autoincrement())
+  testId        Int
+  test          TestName      @relation(fields: [testId], references: [id])
+  categoryId    Int
+  category      TestCategory  @relation(fields: [categoryId], references: [id])
+  studentId     Int
+  student       Student       @relation(fields: [studentId], references: [id])
+  paymentStatus PaymentStatus
+  paymentMethod PaymentMethod
+  paymentAmount Float
+  paymentDate   DateTime?
+  testType      TestType // If test type will be free then status will be completed and payment method will be other
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  NET_BANKING
+  PAYPAL
+  UPI
+  WALLET
+  OTHER
+}
