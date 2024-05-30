@@ -1,9 +1,12 @@
 import express from "express"
 import { Request, Response } from "express"
 import { Admin } from "@prisma/client"
-import { AdminType, AdminSchema, Role } from "../../schemas/admin.schema.js"
+import { AdminType, AdminSchema, Role, AdminLoginSchema } from "../../schemas/admin.schema.js"
 
 import prisma from '../../utils/prismaClient.js'
+import { generateJwtToken } from "../../utils/jwt.utils.js"
+import { Secret } from "jsonwebtoken"
+import { matchPassword } from "../../utils/password.utils.js"
 
 export const registerAdmin = async (req: Request, res: Response) => {
     const validatedAdmin: AdminType = req.body
@@ -14,7 +17,7 @@ export const registerAdmin = async (req: Request, res: Response) => {
             email: validatedAdmin.email
         }
     })
-    if(admin) {
+    if (admin) {
         return res.status(301).json({
             message: "Admin already Exists!!!"
         })
@@ -31,7 +34,50 @@ export const registerAdmin = async (req: Request, res: Response) => {
 }
 
 // for Login Admin
-export function loginAdmin(req: Request, res: Response) {
+export async function loginAdmin(req: Request, res: Response) {
+    const parsedData = AdminLoginSchema.safeParse(req.body)
+    if (!parsedData.success) {
+        return res.status(411).json({
+            message: "Please provide right values",
+            error: parsedData.error
+        })
+    }
+
+    const email = parsedData.data.email
+    const password = parsedData.data.password
+
+    // find if user exist
+    const admin = await prisma.admin.findUnique({
+        where: {
+            email: email
+        },
+        select: {
+            email: true,
+            password: true
+        }
+    })
+    if (!admin) {
+        return res.status(411).json({
+            message: "Admin doesn't exist"
+        })
+    }
+
+    // Check for password 
+    const isPasswordOk = await matchPassword(password, admin.password)
+
+    if (isPasswordOk) {
+        // create jwt token and send it back
+        const token = await generateJwtToken({ email: admin.email }, process.env.JWT_SECRET as Secret)
+        console.log(token)
+        res.status(200).json({
+            message: "Logged in",
+            token: token
+        })
+    } else {
+        return res.status(411).json({
+            message: "Password didn't matched"
+        })
+    }
 
 }
 

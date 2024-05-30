@@ -1,3 +1,4 @@
+import { emitWarning } from "process"
 import { z } from "zod"
 
 // Role enum
@@ -15,17 +16,9 @@ export const AdminSchema = z.object({
     profilePic: z.string().url({ message: "Profile pic must be an url" }).optional()
 })
 
+export const AdminLoginSchema = AdminSchema.pick({email: true, password: true}).strict()
+
+
+export type AdminLoginType = z.infer<typeof AdminLoginSchema>
 export type AdminType = z.infer<typeof AdminSchema>
 
-
-
-// model Admin {
-//   id         Int @id @default (autoincrement())
-//   email      String @unique @db.VarChar(50)
-//   password   String @db.VarChar(200)
-//   name       String @db.VarChar(50)
-//   userName   String @unique @db.VarChar(50)
-//   role       Role @default (ADMIN)
-//   profilePic String ?
-//         TestName   TestName[]
-// }
