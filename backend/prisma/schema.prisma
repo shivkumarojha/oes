@@ -69,12 +69,13 @@ enum TestType {
 
 // Test Questions
 model TestQuestion {
-  id       Int      @id @default(autoincrement())
-  testName Int
-  test     TestName @relation(fields: [testName], references: [id])
-  question String
-  answer   Answer
-  Options  Options?
+  id          Int      @id @default(autoincrement())
+  testName    Int
+  test        TestName @relation(fields: [testName], references: [id])
+  question    String
+  questionPic String?
+  answer      Answer
+  Options     Options?
 }
 
 model Options {
