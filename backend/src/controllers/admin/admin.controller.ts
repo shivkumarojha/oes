@@ -1,13 +1,31 @@
 import express from "express"
 import { Request, Response } from "express"
-import { PrismaClient } from "@prisma/client"
+import { Admin } from "@prisma/client"
+import { AdminType, AdminSchema, Role } from "../../schemas/admin.schema.js"
 
-const prisma = new PrismaClient()
+import prisma from '../../utils/prismaClient.js'
 
 export const registerAdmin = async (req: Request, res: Response) => {
-    console.log("register admin")
+    const validatedAdmin: AdminType = req.body
+
+    // check if admin exists or not
+    const admin = await prisma.admin.findUnique({
+        where: {
+            email: validatedAdmin.email
+        }
+    })
+    if(admin) {
+        return res.status(301).json({
+            message: "Admin already Exists!!!"
+        })
+    }
+    // Create Admin
+    const adminUser = await prisma.admin.create({
+        data: { ...validatedAdmin }
+    })
     res.status(200).json({
-        message: "user created"
+        message: "Admin created",
+        user: adminUser
     })
 
 }

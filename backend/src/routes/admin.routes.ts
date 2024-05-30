@@ -3,12 +3,13 @@ import { changePassword, loginAdmin, registerAdmin, updateAdmin } from "../contr
 import { addTestCategory, deleteTestCategory, updateTestCategory } from "../controllers/admin/testCategory.controller.js";
 import { addTestName, deleteTestName, getAllTest, getSingleTest, setTestVisibility, updateTestName } from "../controllers/admin/testName.controller.js";
 import { addQuestion, deleteQuestion, getQuestions, updateQuestion } from "../controllers/admin/testQuestion.controller.js";
-
+import { validateAdminSchema } from "../middlewares/validateAdminSchema.middleware.js";
+import { hashPasswordMiddleware } from "../middlewares/hashPassword.middleware.js";
 const router = express.Router()
 
 
 // Auth routes
-router.route("/register").post(registerAdmin)
+router.route("/register").post(validateAdminSchema, hashPasswordMiddleware, registerAdmin)
 router.route("/login").post(loginAdmin)
 router.route("/updateAdmin/:id").post(updateAdmin)
 router.route("/changePassword/:id").post(changePassword)
