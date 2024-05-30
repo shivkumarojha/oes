@@ -3,6 +3,8 @@ import 'dotenv/config'
 
 const app = express()
 
+// for parsing body
+app.use(express.json())
 // admin router
 import adminRouter from "./routes/admin.routes.js"
 app.use('/api/v1/admin', adminRouter)
