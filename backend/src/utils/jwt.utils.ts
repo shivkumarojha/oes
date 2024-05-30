@@ -1,6 +1,6 @@
 import jwt, { Secret } from "jsonwebtoken"
 
-interface Payload {
+export interface Payload {
         email: string
 }
 

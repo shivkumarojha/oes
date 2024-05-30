@@ -5,13 +5,14 @@ import { addTestName, deleteTestName, getAllTest, getSingleTest, setTestVisibili
 import { addQuestion, deleteQuestion, getQuestions, updateQuestion } from "../controllers/admin/testQuestion.controller.js";
 import { validateAdminSchema } from "../middlewares/validateAdminSchema.middleware.js";
 import { hashPasswordMiddleware } from "../middlewares/hashPassword.middleware.js";
+import adminAuthMiddleware from "../middlewares/adminAuth.middleware.js";
 const router = express.Router()
 
 
 // Auth routes
 router.route("/register").post(validateAdminSchema, hashPasswordMiddleware, registerAdmin)
 router.route("/login").post(loginAdmin)
-router.route("/updateAdmin/:id").post(updateAdmin)
+router.route("/updateAdmin").post(adminAuthMiddleware, updateAdmin)
 router.route("/changePassword/:id").post(changePassword)
 
 // Test related routes

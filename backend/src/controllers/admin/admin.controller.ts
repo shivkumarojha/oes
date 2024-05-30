@@ -1,7 +1,7 @@
 import express from "express"
 import { Request, Response } from "express"
 import { Admin } from "@prisma/client"
-import { AdminType, AdminSchema, Role, AdminLoginSchema } from "../../schemas/admin.schema.js"
+import { AdminType, AdminSchema, Role, AdminLoginSchema, UpdateAdminSchema } from "../../schemas/admin.schema.js"
 
 import prisma from '../../utils/prismaClient.js'
 import { generateJwtToken } from "../../utils/jwt.utils.js"
@@ -82,7 +82,38 @@ export async function loginAdmin(req: Request, res: Response) {
 }
 
 // For update Admin
-export function updateAdmin(req: Request, res: Response) {
+export async function updateAdmin(req: Request, res: Response) {
+    // @ts-ignore
+    const email = req.user.email
+    const parsedData = UpdateAdminSchema.safeParse(req.body)
+
+    if (!parsedData.success) {
+        return res.status(403).json({
+            message: "Please provide required values",
+            error: parsedData.error
+        })
+    }
+
+    const admin = await prisma.admin.update({
+        where: {
+            email: email
+        },
+        data: {
+            userName: parsedData.data.userName,
+            name: parsedData.data.name,
+            profilePic: parsedData.data.profilePic
+        }
+    })
+    if (!admin) {
+        return res.status(304).json({
+            message: "Admin user doesn't exists",
+
+        })
+    }
+    return res.status(200).json({
+        message: "Successfull updated",
+        updatedAdmin: admin
+    })
 
 }
 

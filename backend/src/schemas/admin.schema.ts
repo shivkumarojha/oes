@@ -24,8 +24,8 @@ export type AdminType = z.infer<typeof AdminSchema>
 
 // Update admin Schema
 export const UpdateAdminSchema = z.object({
-    name: z.string({ message: "Name is required" }),
-    userName: z.string({ message: "User must be lowercase " }).toLowerCase(),
+    name: z.string().optional(),
+    userName: z.string({ message: "User must be lowercase " }).toLowerCase().optional(),
     profilePic: z.string().url({ message: "Profile pic must be an url" }).optional()
 })
 
