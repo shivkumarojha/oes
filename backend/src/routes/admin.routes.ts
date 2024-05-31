@@ -1,6 +1,6 @@
 import express from "express";
 import { changeAdminPassword, loginAdmin, registerAdmin, updateAdmin } from "../controllers/admin/admin.controller.js";
-import { addTestCategory, deleteTestCategory, updateTestCategory } from "../controllers/admin/testCategory.controller.js";
+import { addTestCategory, deleteTestCategory, getAllTestCategories, updateTestCategory } from "../controllers/admin/testCategory.controller.js";
 import { addTestName, deleteTestName, getAllTest, getSingleTest, setTestVisibility, updateTestName } from "../controllers/admin/testName.controller.js";
 import { addQuestion, deleteQuestion, getQuestions, updateQuestion } from "../controllers/admin/testQuestion.controller.js";
 import { validateAdminSchema } from "../middlewares/validateAdminSchema.middleware.js";
@@ -17,9 +17,11 @@ router.route("/changePassword").post(adminAuthMiddleware, changeAdminPassword)
 
 // Test related routes
 
-router.route("/addTestCategory").post(addTestCategory)
-router.route("/updateTestCategory/:testCategoryId").post(updateTestCategory)
-router.route("/deleteTestCategory/:testCategoryId").post(deleteTestCategory)
+router.route("/addTestCategory").post(adminAuthMiddleware, addTestCategory)
+router.route("/updateTestCategory/:id").post(adminAuthMiddleware, updateTestCategory)
+router.route("/deleteTestCategory/:id").post(adminAuthMiddleware, deleteTestCategory)
+router.route("/getTestCategories").post(adminAuthMiddleware, getAllTestCategories)
+
 
 router.route("/addTestName/:testCategoryId").post(addTestName
 )
