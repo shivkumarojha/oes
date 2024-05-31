@@ -1,5 +1,5 @@
 import express from "express";
-import { changePassword, loginAdmin, registerAdmin, updateAdmin } from "../controllers/admin/admin.controller.js";
+import { changeAdminPassword, loginAdmin, registerAdmin, updateAdmin } from "../controllers/admin/admin.controller.js";
 import { addTestCategory, deleteTestCategory, updateTestCategory } from "../controllers/admin/testCategory.controller.js";
 import { addTestName, deleteTestName, getAllTest, getSingleTest, setTestVisibility, updateTestName } from "../controllers/admin/testName.controller.js";
 import { addQuestion, deleteQuestion, getQuestions, updateQuestion } from "../controllers/admin/testQuestion.controller.js";
@@ -13,7 +13,7 @@ const router = express.Router()
 router.route("/register").post(validateAdminSchema, hashPasswordMiddleware, registerAdmin)
 router.route("/login").post(loginAdmin)
 router.route("/updateAdmin").post(adminAuthMiddleware, updateAdmin)
-router.route("/changePassword/:id").post(changePassword)
+router.route("/changePassword").post(adminAuthMiddleware, changeAdminPassword)
 
 // Test related routes
 

@@ -1,12 +1,13 @@
 import express from "express"
 import { Request, Response } from "express"
 import { Admin } from "@prisma/client"
-import { AdminType, AdminSchema, Role, AdminLoginSchema, UpdateAdminSchema } from "../../schemas/admin.schema.js"
+import { AdminType, AdminSchema, Role, AdminLoginSchema, UpdateAdminSchema, CheckAdminPasswordSchema } from "../../schemas/admin.schema.js"
 
 import prisma from '../../utils/prismaClient.js'
 import { generateJwtToken } from "../../utils/jwt.utils.js"
 import { Secret } from "jsonwebtoken"
-import { matchPassword } from "../../utils/password.utils.js"
+import { hashPassword, matchPassword } from "../../utils/password.utils.js"
+import { hashPasswordMiddleware } from "../../middlewares/hashPassword.middleware.js"
 
 export const registerAdmin = async (req: Request, res: Response) => {
     const validatedAdmin: AdminType = req.body
@@ -83,8 +84,11 @@ export async function loginAdmin(req: Request, res: Response) {
 
 // For update Admin
 export async function updateAdmin(req: Request, res: Response) {
-    // @ts-ignore
-    const email = req.user.email
+
+    let email
+    if (req.user) {
+        email = req.user.email
+    }
     const parsedData = UpdateAdminSchema.safeParse(req.body)
 
     if (!parsedData.success) {
@@ -118,7 +122,54 @@ export async function updateAdmin(req: Request, res: Response) {
 }
 
 // for changing admin password
-export function changePassword(req: Request, res: Response) {
+export async function changeAdminPassword(req: Request, res: Response) {
+
+    let email
+    if (req.user) {
+        email = req.user.email
+    }
+    const parsedData = CheckAdminPasswordSchema.safeParse(req.body)
+    if (!parsedData.success) {
+        return res.status(403).json({
+            message: "New password and confirmPassword didn't matched",
+            error: parsedData.error
+        })
+    }
+    const password = parsedData.data.password
+    const newPassword = parsedData.data.newPassword
+
+    const admin = await prisma.admin.findUnique({
+        where: {
+            email: email
+        },
+        select: {
+            password: true
+        }
+    })
+
+    let passwordMatched
+    if (admin) {
+        passwordMatched = await matchPassword(password, admin.password)
+    }
+    if (!passwordMatched) {
+        return res.status(411).json({
+            message: "Unauthorized access, current password doesn't matched"
+        })
+    }
+    const hashedPassword = await hashPassword(newPassword)
+    const updateAdminPassword = await prisma.admin.update({
+        where: {
+            email: email
+        },
+        data: {
+            password: hashedPassword
+        }
+    })
+
+    res.status(200).json({
+        message: "Password successfully changed..",
+        user: email
+    })
 
 }
 
