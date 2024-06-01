@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { number, z } from "zod"
 
 // Test Category schema
 export const TestCategorySchema = z.object({
@@ -7,13 +7,25 @@ export const TestCategorySchema = z.object({
 
 
 
+// Test Type enum
+export enum TestType {
+    FREE = "FREE",
+    PAID = "PAID",
+    ONE_TIME_ONLY = "ONE_TIME_ONLY"
+}
 // Test Name Schema
 export const TestNameSchema = z.object({
     testName: z.string(),
     testPrice: z.number(),
     testTime: z.number(),
     visibility: z.boolean(),
+    testType: z.nativeEnum(TestType).default(TestType.PAID),
+    categoryId: z.number(),
 })
+
+
+
+export type TestNameType = z.infer<typeof TestNameSchema>
 // // Test name like JEE exam 2019 and many more
 // model TestName {
 //   id            Int @id @default (autoincrement())

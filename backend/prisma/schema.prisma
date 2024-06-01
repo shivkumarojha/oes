@@ -56,7 +56,7 @@ model TestName {
   created_at    DateTime        @default(now())
   updated_at    DateTime        @updatedAt
   TestQuestion  TestQuestion[]
-  testType      TestType
+  testType      TestType        @default(PAID)
   EnrollForTest EnrollForTest[]
 }
 

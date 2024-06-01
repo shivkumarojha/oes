@@ -46,17 +46,19 @@ export async function loginAdmin(req: Request, res: Response) {
 
     const email = parsedData.data.email
     const password = parsedData.data.password
-
+    console.log(email)
     // find if user exist
     const admin = await prisma.admin.findUnique({
         where: {
             email: email
         },
         select: {
+            id: true,
             email: true,
             password: true
         }
     })
+    console.log(admin)
     if (!admin) {
         return res.status(411).json({
             message: "Admin doesn't exist"
@@ -68,7 +70,7 @@ export async function loginAdmin(req: Request, res: Response) {
 
     if (isPasswordOk) {
         // create jwt token and send it back
-        const token = await generateJwtToken({ email: admin.email }, process.env.JWT_SECRET as Secret)
+        const token = await generateJwtToken({ id: admin.id, email: admin.email }, process.env.JWT_SECRET as Secret)
         console.log(token)
         res.status(200).json({
             message: "Logged in",

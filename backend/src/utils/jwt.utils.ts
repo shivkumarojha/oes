@@ -1,6 +1,7 @@
 import jwt, { Secret } from "jsonwebtoken"
 
 export interface Payload {
+        id: number,
         email: string
 }
 

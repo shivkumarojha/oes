@@ -2,6 +2,7 @@ import express from "express"
 
 // user type 
 interface User {
+    id: number,
     email: string
 }
 

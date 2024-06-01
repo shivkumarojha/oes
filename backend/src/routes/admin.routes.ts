@@ -22,24 +22,22 @@ router.route("/updateTestCategory/:id").post(adminAuthMiddleware, updateTestCate
 router.route("/deleteTestCategory/:id").post(adminAuthMiddleware, deleteTestCategory)
 router.route("/getTestCategories").post(adminAuthMiddleware, getAllTestCategories)
 
-
-router.route("/addTestName/:testCategoryId").post(addTestName
+// Test Name related
+router.route("/addTestName/:testCategoryId").post(adminAuthMiddleware,addTestName
+)
+router.route("/updateTestName/:testId").post(adminAuthMiddleware, updateTestName
 )
 
-
-router.route("/updateTestName/:testId").post(updateTestName
+router.route("/deleteTestName/:testId").post(adminAuthMiddleware, deleteTestName
 )
 
-router.route("/deleteTestName/:testId").post(deleteTestName
+router.route("/getSingleTest/:testId").post(adminAuthMiddleware, getSingleTest
 )
 
-router.route("/getSingleTest/:testId").post(getSingleTest
+router.route("/getAllTest/:testCategoryId").post(adminAuthMiddleware, getAllTest
 )
 
-router.route("/getAllTest/:testCategoryId").post(getAllTest
-)
-
-router.route("/setTestVisibility/:testId").post(setTestVisibility
+router.route("/setTestVisibility/:testId").post(adminAuthMiddleware, setTestVisibility
 )
 
 // question Related routes
