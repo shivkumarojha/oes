@@ -55,9 +55,11 @@ model TestName {
   category      TestCategory    @relation(fields: [categoryId], references: [id])
   created_at    DateTime        @default(now())
   updated_at    DateTime        @updatedAt
-  TestQuestion  TestQuestion[]  
+  TestQuestion  TestQuestion[]
   testType      TestType        @default(PAID)
   EnrollForTest EnrollForTest[]
+  scheduledAt   DateTime?
+  Order         Order[]
 }
 
 // Type of test - Free Paid ONE
@@ -108,6 +110,7 @@ model Student {
   updatedAt          DateTime             @updatedAt
   SelectTestCategory SelectTestCategory[]
   EnrollForTest      EnrollForTest[]
+  Order              Order[]
 }
 
 // Select categories for students so that they can select desired category of exams
@@ -121,18 +124,31 @@ model SelectTestCategory {
 
 // Enroll for Test
 model EnrollForTest {
-  id            Int           @id @default(autoincrement())
-  testId        Int
-  test          TestName      @relation(fields: [testId], references: [id])
-  categoryId    Int
-  category      TestCategory  @relation(fields: [categoryId], references: [id])
-  studentId     Int
-  student       Student       @relation(fields: [studentId], references: [id])
-  paymentStatus PaymentStatus
-  paymentMethod PaymentMethod
-  paymentAmount Float
-  paymentDate   DateTime?
-  testType      TestType // If test type will be free then status will be completed and payment method will be other
+  id         Int          @id @default(autoincrement())
+  testId     Int
+  test       TestName     @relation(fields: [testId], references: [id])
+  categoryId Int
+  category   TestCategory @relation(fields: [categoryId], references: [id])
+  studentId  Int
+  student    Student      @relation(fields: [studentId], references: [id])
+  testType   TestType // If test type will be free then status will be completed and payment method will be other
+  Order      Order[]
+}
+
+// Payment Status
+model Order {
+  id              Int           @id @default(autoincrement())
+  enrolledId      Int
+  EnrollForTest   EnrollForTest @relation(fields: [enrolledId], references: [id])
+  studentId       Int
+  student         Student       @relation(fields: [studentId], references: [id])
+  testId          Int
+  test            TestName      @relation(fields: [testId], references: [id])
+  paymentIntentId String        @unique
+  paymentStatus   PaymentStatus
+  paymentMethod   PaymentMethod
+  paymentAmount   Int
+  paymentDate     DateTime?
 }
 
 enum PaymentStatus {
