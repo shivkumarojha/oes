@@ -12,9 +12,6 @@ export default async function adminAuthMiddleware(req: Request, res: Response, n
         })
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET as Secret) as any
-    console.log(decoded)
-    console.log("inside auth")
     req.user = decoded
-    console.log(req.user)
     next()
 }

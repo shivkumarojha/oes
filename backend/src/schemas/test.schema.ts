@@ -37,7 +37,6 @@ export enum Answer {
 }
 // Test Question Schema
 export const TestQuestionSchema = z.object({
-    testName: z.number(),
     question: z.string(),
     questionPic: z.string().optional(),
     answer: z.nativeEnum(Answer),
