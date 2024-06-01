@@ -55,7 +55,7 @@ model TestName {
   category      TestCategory    @relation(fields: [categoryId], references: [id])
   created_at    DateTime        @default(now())
   updated_at    DateTime        @updatedAt
-  TestQuestion  TestQuestion[]
+  TestQuestion  TestQuestion[]  
   testType      TestType        @default(PAID)
   EnrollForTest EnrollForTest[]
 }

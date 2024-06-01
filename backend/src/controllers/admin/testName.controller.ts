@@ -101,6 +101,7 @@ export async function getSingleTest(req: Request, res: Response) {
             where: {
                 id: Number(testId)
             }
+
         })
         console.log(test)
         return res.status(200).json({

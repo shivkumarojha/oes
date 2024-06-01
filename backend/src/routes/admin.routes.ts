@@ -23,7 +23,7 @@ router.route("/deleteTestCategory/:id").post(adminAuthMiddleware, deleteTestCate
 router.route("/getTestCategories").post(adminAuthMiddleware, getAllTestCategories)
 
 // Test Name related
-router.route("/addTestName/:testCategoryId").post(adminAuthMiddleware,addTestName
+router.route("/addTestName/:testCategoryId").post(adminAuthMiddleware, addTestName
 )
 router.route("/updateTestName/:testId").post(adminAuthMiddleware, updateTestName
 )
