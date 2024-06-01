@@ -70,8 +70,8 @@ enum TestType {
 // Test Questions
 model TestQuestion {
   id          Int      @id @default(autoincrement())
-  testName    Int
-  test        TestName @relation(fields: [testName], references: [id])
+  testId      Int
+  test        TestName @relation(fields: [testId], references: [id])
   question    String
   questionPic String?
   answer      Answer

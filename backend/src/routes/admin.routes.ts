@@ -41,15 +41,15 @@ router.route("/setTestVisibility/:testId").post(adminAuthMiddleware, setTestVisi
 )
 
 // question Related routes
-router.route("/addQuestion/:testId").post(addQuestion)
+router.route("/addQuestion/:testId").post(adminAuthMiddleware, addQuestion)
 
-router.route("/updateQuestion/:questionId").post(updateQuestion
+router.route("/updateQuestion/:questionId").post(adminAuthMiddleware, updateQuestion
 )
 
-router.route("/deleteQuestion/:questionId").post(deleteQuestion
+router.route("/deleteQuestion/:questionId").post(adminAuthMiddleware, deleteQuestion
 )
 
-router.route("/getAllQuestions/:testId").post(getQuestions)
+router.route("/getAllQuestions/:testId").post(adminAuthMiddleware, getQuestions)
 
 
 export default router

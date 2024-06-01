@@ -26,30 +26,31 @@ export const TestNameSchema = z.object({
 
 
 export type TestNameType = z.infer<typeof TestNameSchema>
-// // Test name like JEE exam 2019 and many more
-// model TestName {
-//   id            Int @id @default (autoincrement())
-//   testName      String
-//   testPrice     Int
-//   testTime      Int
-//   visibility    Boolean
-//   createdBy     Int
-//   admin         Admin @relation(fields: [createdBy], references: [id])
-//   categoryId    Int
-//   category      TestCategory @relation(fields: [categoryId], references: [id])
-//   created_at    DateTime @default (now())
-//   updated_at    DateTime @updatedAt
-//   TestQuestion  TestQuestion[]
-//   testType      TestType
-//   EnrollForTest EnrollForTest[]
-// }
 
-// // Type of test - Free Paid ONE
-// enum TestType {
-//     FREE
-//   PAID
-//   ONE_TIME_ONLY
-// }
+
+// Enum for Answer
+export enum Answer {
+    A = "A",
+    B = "B",
+    C = "C",
+    D = "D"
+}
+// Test Question Schema
+export const TestQuestionSchema = z.object({
+    testName: z.number(),
+    question: z.string(),
+    questionPic: z.string().optional(),
+    answer: z.nativeEnum(Answer),
+    options: z.object({
+        option1: z.string(),
+        option2: z.string(),
+        option3: z.string(),
+        option4: z.string()
+    })
+})
+
+//Test Question Type
+export type TestQuestionType = z.infer<typeof TestQuestionSchema>
 
 // // Test Questions
 // model TestQuestion {
