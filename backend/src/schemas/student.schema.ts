@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { number, z } from "zod"
 
 // Student Schema
 export const StudentSchema = z.object({
@@ -12,3 +12,9 @@ export const StudentSchema = z.object({
 
 // Login Schema
 export const StudentLoginSchema = StudentSchema.pick({ email: true, password: true }).strict()
+
+
+// Test Category Schema
+export const StudentTestCategorySchema = z.object({
+    id: z.array(z.number())
+}) 

@@ -1,7 +1,7 @@
 import express from "express"
 import { signin, signup } from "../controllers/student/student.controller.js"
 import studentAuthMiddlreware from "../middlewares/studentAuth.middleware.js"
-import { selectCategory, showAllCategory } from "../controllers/student/selectCategory.controller.js"
+import { getAllStudentTestCategory, selectTestCategory, showAllCategory } from "../controllers/student/selectCategory.controller.js"
 
 const router = express.Router()
 
@@ -18,6 +18,10 @@ router.route('/signin').post(signin)
 // Student  category related routes
 router.route("/showAllCategory").post(studentAuthMiddlreware, showAllCategory)
 
-router.route("/selectCategory").post(studentAuthMiddlreware, selectCategory)
+// expects object with all selected category
+router.route("/selectTestCategory").post(studentAuthMiddlreware, selectTestCategory)
 
+
+// get all test categories of a particular student
+router.route("/getTestCategories").post(studentAuthMiddlreware, getAllStudentTestCategory)
 export default router 
