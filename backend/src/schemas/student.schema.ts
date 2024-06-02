@@ -8,3 +8,7 @@ export const StudentSchema = z.object({
     userName: z.string({ message: "User must be lowercase " }).toLowerCase(),
     profilePic: z.string().url({ message: "Profile pic must be an url" }).optional()
 })
+
+
+// Login Schema
+export const StudentLoginSchema = StudentSchema.pick({ email: true, password: true }).strict()
