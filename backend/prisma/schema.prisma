@@ -36,10 +36,11 @@ enum Role {
 // Test Category
 // Like JEE, NEET, All Gov exams(UPSC, SSC)
 model TestCategory {
-  id            Int             @id @default(autoincrement())
-  categoryName  String          @unique
-  TestName      TestName[]
-  EnrollForTest EnrollForTest[]
+  id                 Int                  @id @default(autoincrement())
+  categoryName       String               @unique
+  TestName           TestName[]
+  EnrollForTest      EnrollForTest[]
+  SelectTestCategory SelectTestCategory[]
 }
 
 // Test name like JEE exam 2019 and many more
@@ -116,10 +117,11 @@ model Student {
 // Select categories for students so that they can select desired category of exams
 
 model SelectTestCategory {
-  id        Int     @id @default(autoincrement())
-  studentId Int
-  student   Student @relation(fields: [studentId], references: [id])
-  category  Int
+  id         Int          @id @default(autoincrement())
+  studentId  Int
+  student    Student      @relation(fields: [studentId], references: [id])
+  categoryId Int
+  category   TestCategory @relation(fields: [categoryId], references: [id])
 }
 
 // Enroll for Test
