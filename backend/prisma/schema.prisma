@@ -49,6 +49,7 @@ model TestName {
   testName      String
   testPrice     Int
   testTime      Int
+  marks         Int
   visibility    Boolean
   createdBy     Int
   admin         Admin           @relation(fields: [createdBy], references: [id])

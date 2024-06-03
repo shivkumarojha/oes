@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "TestName" ADD COLUMN     "marks" INTEGER NOT NULL DEFAULT 100;

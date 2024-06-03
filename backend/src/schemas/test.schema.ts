@@ -18,6 +18,7 @@ export const TestNameSchema = z.object({
     testName: z.string(),
     testPrice: z.number(),
     testTime: z.number(),
+    marks: z.number(),
     visibility: z.boolean(),
     testType: z.nativeEnum(TestType).default(TestType.PAID),
     categoryId: z.number(),
