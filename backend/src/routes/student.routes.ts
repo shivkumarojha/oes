@@ -2,7 +2,8 @@ import express from "express"
 import { signin, signup } from "../controllers/student/student.controller.js"
 import studentAuthMiddlreware from "../middlewares/studentAuth.middleware.js"
 import { getAllStudentTestCategory, selectTestCategory, showAllCategory } from "../controllers/student/selectCategory.controller.js"
-import { enrollForFreeTest, getTestByCategory } from "../controllers/student/studentTests.controller.js"
+import { enrollForFreeTest, getStudentBuyiedTest, getTestByCategory, verifyPurchase } from "../controllers/student/studentTests.controller.js"
+import { verify } from "crypto"
 
 const router = express.Router()
 
@@ -31,4 +32,10 @@ router.route("/getTestByCategory/:testCategoryId").post(studentAuthMiddlreware, 
 
 router.route("/enrollForFreeTest/:testId").post(studentAuthMiddlreware, enrollForFreeTest)
 
+
+// show buying test for student
+router.route("/getStudentBuyiedTest").post(studentAuthMiddlreware, getStudentBuyiedTest)
+
+// Verify purchase 
+router.route("/verifyPurchase").post(studentAuthMiddlreware, verifyPurchase)
 export default router 
