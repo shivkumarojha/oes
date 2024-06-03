@@ -4,6 +4,8 @@ import studentAuthMiddlreware from "../middlewares/studentAuth.middleware.js"
 import { getAllStudentTestCategory, selectTestCategory, showAllCategory } from "../controllers/student/selectCategory.controller.js"
 import { enrollForFreeTest, getStudentBuyiedTest, getTestByCategory, verifyPurchase } from "../controllers/student/studentTests.controller.js"
 import { verify } from "crypto"
+import test from "node:test"
+import { getQuestionPaper } from "../controllers/student/questionPaper.controller.js"
 
 const router = express.Router()
 
@@ -38,4 +40,8 @@ router.route("/getStudentBuyiedTest").post(studentAuthMiddlreware, getStudentBuy
 
 // Verify purchase 
 router.route("/verifyPurchase").post(studentAuthMiddlreware, verifyPurchase)
+
+
+// Question paper related routes
+router.route("/getQuestionPaper/:testId").post(studentAuthMiddlreware, getQuestionPaper)
 export default router 
