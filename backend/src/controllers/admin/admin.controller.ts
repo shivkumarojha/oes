@@ -66,7 +66,7 @@ export async function loginAdmin(req: Request, res: Response) {
     }
 
     // Check for password 
-    const isPasswordOk = await matchPassword(password, admin.password)
+const isPasswordOk = await matchPassword(password, admin.password)
 
     if (isPasswordOk) {
         // create jwt token and send it back
