@@ -1,11 +1,14 @@
 import 'module-alias/register.js'
 import express from "express"
 import 'dotenv/config'
-
+import cors from 'cors'
 const app = express()
 
 // for parsing body
 app.use(express.json())
+
+//for cors
+app.use(cors())
 // admin router
 import adminRouter from "./routes/admin.routes.js"
 app.use('/api/v1/admin', adminRouter)

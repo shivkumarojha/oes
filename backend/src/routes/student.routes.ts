@@ -10,9 +10,14 @@ import { getQuestionPaper } from "../controllers/student/questionPaper.controlle
 const router = express.Router()
 
 // student dashboard
-router.route("/dashboard").post((req, res) => {
-    res.json({
-        message: "Student dashboard"
+router.route("/me").get(studentAuthMiddlreware, (req, res) => {
+    const student = req?.user
+    if (!student) {
+        return res.send(false)
+    }
+    return res.status(200).json({
+        message: "Student dashboard",
+        student: student
     })
 })
 
