@@ -1,21 +1,20 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import App from "./App.tsx"
+import { Route } from "react-router-dom"
 import "./index.css"
+import App from "./App"
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom"
 import AdminDashobard from "./pages/admin/AdminDashboard.tsx"
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-  },
-  {
-    path: "/admin",
-    element: <AdminDashobard />,
-  },
-])
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      <Route path="/" element={<App />} />
+      <Route  path="/admin" element={<AdminDashobard />} />
+    </>
+  )
+)
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
