@@ -1,27 +1,16 @@
-import { useEffect } from "react"
-import "./App.css"
-import { useNavigate } from "react-router-dom"
-import HomePage from "./pages/HomePage"
-import axios from "axios"
+import { Routes, Route } from "react-router-dom"
+import AdminDashobard from "./pages/admin/AdminDashboard"
+import StudentDashboard from "./pages/StudentDashboard"
+import LandingPage from "./pages/LandingPage"
 
 function App() {
-  const navigate = useNavigate()
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/v1/student/me", {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {
-        console.log(res.data.student.id)
-        if (res.data) {
-          navigate("/student")
-        }
-      })
-  }, [])
-
-  return <HomePage />
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/admin" element={<AdminDashobard />} />
+      <Route path="/student" element={<StudentDashboard />} />
+    </Routes>
+  )
 }
 
 export default App
